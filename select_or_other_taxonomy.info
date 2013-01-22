@@ -1,0 +1,5 @@
+name = Select (or other) Taxonomy
+description = "Extends the Select (or other) module to provide additional widgets for term reference fields."
+core = 7.x
+dependencies[] = select_or_other
+version = 7.x-0.91-dev
