@@ -70,7 +70,7 @@ function select_or_other_taxonomy_field_widget_form( &$form, &$form_state, $fiel
     case 'select_or_other':
       $element['#select_type'] = 'select';
       break;
-    case 'select_or_other_buttons':
+    case 'select_or_other_taxonomy_buttons':
       $element['#select_type'] = $field['cardinality'] == 1 ? 'radios' : 'checkboxes';
       break;
   }
@@ -107,7 +107,7 @@ function select_or_other_taxonomy_get_options($field) {
     ->propertyCondition('vid', $vocabularies[0])
     ->execute();
 
-  $options = array(t('- None -'));
+  //$options = array(t('- None -'));
 
   if (!empty($result)) {
     // load the taxonomy terms
