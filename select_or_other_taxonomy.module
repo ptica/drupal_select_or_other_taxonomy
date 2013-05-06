@@ -67,7 +67,7 @@ function select_or_other_taxonomy_field_widget_form( &$form, &$form_state, $fiel
 
   // Set select types.
   switch ($instance['widget']['type']) {
-    case 'select_or_other':
+    case 'select_or_other_taxonomy':
       $element['#select_type'] = 'select';
       break;
     case 'select_or_other_taxonomy_buttons':
@@ -155,8 +155,8 @@ function select_or_other_taxonomy_field_widget_validate($element, &$form_state) 
     }
 
     if ($other_selected) {
-      if ($other_value = select_or_other_taxonomy_get_other_value($element, $field_info) ) {
-        $values[] = $other_value;
+      if ($other_values = select_or_other_taxonomy_get_other_value($element, $field_info) ) {
+        $values = array_merge($values, $other_values);
       }
     }
   }
@@ -164,7 +164,7 @@ function select_or_other_taxonomy_field_widget_validate($element, &$form_state) 
     // This is a single select
 
     if ($element['select']['#value'] == 'select_or_other') {
-      $values[] = select_or_other_taxonomy_get_other_value($element, $field_info);
+      $values = array_merge($values, $other_values);
     } else {
       $values[] = array( 'tid' => $element['select']['#value'] );
     }
@@ -200,11 +200,18 @@ function select_or_other_taxonomy_get_other_value($element, $form_info) {
     $vocabulary_name = $form_info['settings']['allowed_values'][0]['vocabulary'];
     $vid = taxonomy_vocabulary_machine_name_load($vocabulary_name)->vid;
 
-    return array(
-      'tid' => 'autocreate',
-      'vid' => $vid,
-      'name' => $element['other']['#value'],
-      'vocabulary_machine_name' => $vocabulary_name
-    );
+    // split other tags on comma
+    $new_terms = preg_split('/ ?, ?/', $element['other']['#value']);
+    $values = array();
+
+    foreach ($new_terms as $new_term) {
+	    $values[] = array(
+	      'tid' => 'autocreate',
+	      'vid' => $vid,
+	      'name' => $new_term,
+	      'vocabulary_machine_name' => $vocabulary_name
+	    );
+    }
+    return $values;
   }
 }
