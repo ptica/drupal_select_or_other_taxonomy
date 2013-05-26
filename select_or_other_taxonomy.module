@@ -164,7 +164,7 @@ function select_or_other_taxonomy_field_widget_validate($element, &$form_state) 
     // This is a single select
 
     if ($element['select']['#value'] == 'select_or_other') {
-      $values = array_merge($values, $other_values);
+      $values = select_or_other_taxonomy_get_other_value($element, $field_info);
     } else {
       $values[] = array( 'tid' => $element['select']['#value'] );
     }
