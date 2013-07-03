@@ -52,7 +52,7 @@ function select_or_other_taxonomy_field_widget_form( &$form, &$form_state, $fiel
     '#other' => 
       isset($instance['widget']['settings']['other']) ? 
       $instance['widget']['settings']['other'] : t('Other'),
-    '#default_value' => !empty($items[$delta]) ? $items[$delta] : NULL,
+    '#default_value' => !empty($items[$delta]['tid']) ? $items[$delta]['tid'] : NULL,
     '#options' => select_or_other_taxonomy_get_options($field),
     '#description' => isset($instance['description']) ? $instance['description'] : '',
     '#multiple' => $field['cardinality'] == 1 ? FALSE : $field['cardinality'],
